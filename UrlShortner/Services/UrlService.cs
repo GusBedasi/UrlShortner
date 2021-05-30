@@ -15,7 +15,11 @@ namespace UrlShortner.Services
 
         public ICreateShortUrlResponse GenerateShortUrl(ICreateShortUrlRequest request)
         {
-            throw new NotImplementedException();
+            return new CreateShortUrlResponse
+            {
+                Id = request.UserId,
+                ShortUrl = request.Url.GetHashCode()
+            };
         }
     }
 }

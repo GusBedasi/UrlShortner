@@ -10,6 +10,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using UrlShortner.Services;
 
 namespace UrlShortner
 {
@@ -27,6 +28,7 @@ namespace UrlShortner
         {
 
             services.AddControllers();
+            services.AddScoped<IUrlService, UrlService>();
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "UrlShortner", Version = "v1" });

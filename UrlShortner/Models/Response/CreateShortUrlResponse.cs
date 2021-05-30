@@ -2,11 +2,11 @@
 
 namespace UrlShortner.Models
 {
-    public class CreateShortUrlResponse
+    public class CreateShortUrlResponse : ICreateShortUrlResponse
     {
         [JsonProperty("user_id")]
         public string Id { get; set; }
         [JsonProperty("short_url")]
-        public string ShortUrl { get; set; }
+        public int ShortUrl { get; set; }
     }
 }

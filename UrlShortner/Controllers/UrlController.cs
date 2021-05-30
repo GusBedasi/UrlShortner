@@ -1,18 +1,30 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Web.Http;
 using UrlShortner.Models;
+using UrlShortner.Models.Request;
+using UrlShortner.Services;
 
 namespace UrlShortner.Controllers
 {
-    public class UrlController : ApiController
+    [ApiController]
+    public class UrlController : ControllerBase
     {
-        [Route("/url"), HttpPost]
-        public IHttpActionResult ShortShortenUrl(ICreateShortUrlRequest request)
+        private readonly IUrlService _urlService;
+        public UrlController(IUrlService urlService)
         {
-            return Ok();
+            _urlService = urlService;
+        }
+
+        [Route("/url")]
+        [HttpPost]
+        public IActionResult ShortShortenUrl(CreateShortUrlRequest request)
+        {
+            request.UserId = Request.Headers["UserId"].ToString();
+            var response = _urlService.GenerateShortUrl(request);
+            return Ok(response);
         }
     }
 }
