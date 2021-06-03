@@ -16,7 +16,8 @@
         "environmentVariables": {
             "ASPNETCORE_ENVIRONMENT": "Development",
             "DatabaseName": "shortenurl",
-            "UrlsCollectionName": "Urls"
+            "UrlsCollectionName": "Urls",
+            "ConnectionString": "mongodb://mongoadmin:secret/localhost"
         }
     },
     "UrlShortner": {
@@ -29,7 +30,8 @@
         "dotnetRunMessages": "true",
         "applicationUrl": "http://localhost:5000",
         "DatabaseName": "shortenurl",
-        "UrlsCollectionName": "Urls"
+        "UrlsCollectionName": "Urls",
+        "ConnectionString": "mongodb://mongoadmin:secret/localhost"
     },
     "Docker": {
       "commandName": "Docker",

@@ -4,7 +4,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
-using MongoDB.Driver;
 using UrlShortner.Database;
 using UrlShortner.Services;
 
@@ -12,26 +11,19 @@ namespace UrlShortner
 {
     public class Startup
     {
+        private IConfiguration Configuration { get; }
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
         }
-
-        public IConfiguration Configuration { get; }
-
+        
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.Configure<MongoDbConfig>(Configuration);
-            services.AddSingleton<IDbClient, DbClient>();
+            services.Configure<MongoDbConfig>(Configuration.GetSection("MongoDb"));
             services.AddControllers();
+            services.AddSingleton<IDbClient, DbClient>();
             services.AddScoped<IUrlService, UrlService>();
-            services.AddSingleton<IMongoClient>(x =>
-            {
-                return new MongoClient("mongodb://localhost:27017");
-            });
-            services.AddScoped(x =>            
-                x.GetService<IMongoClient>().StartSession());
             
             services.AddSwaggerGen(c =>
             {

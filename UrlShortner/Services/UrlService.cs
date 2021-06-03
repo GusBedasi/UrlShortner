@@ -16,39 +16,30 @@ namespace UrlShortner.Services
             _urls = dbClient.GetUrlCollection();
         }
 
-        public IDbClient DbClient { get; }
-
         public ICreateShortUrlResponse GenerateShortUrl(ICreateShortUrlRequest request)
         {
             var shortedUrlHash = Code.Create("", 7, true, false, false);
 
-            try
+            var shortedUrlObj = new Url
             {
-                var shortedUrlObj = new Url
-                {
-                    UrlExternalId = Code.Create("url_"),
-                    ShortUrl = $"www.shortenurl.com/{shortedUrlHash}",
-                    Hash = shortedUrlHash,
-                    OriginalUrl = request.OriginalUrl,
-                    CreatedAt = DateTime.UtcNow,
-                    UpdatedAt = DateTime.UtcNow
-                };
+                UrlExternalId = Code.Create("url_"),
+                ShortUrl = $"www.shortenurl.com/{shortedUrlHash}",
+                Hash = shortedUrlHash,
+                OriginalUrl = request.OriginalUrl,
+                CreatedAt = DateTime.UtcNow,
+                UpdatedAt = DateTime.UtcNow
+            };
 
             
-                _urls.InsertOne(shortedUrlObj);
+            _urls.InsertOne(shortedUrlObj);
                 
-                return new CreateShortUrlResponse
-                {
-                    ExternalId = shortedUrlObj.UrlExternalId,
-                    ShortUrl = shortedUrlObj.ShortUrl,
-                    CreatedAt = DateTime.UtcNow,
-                    UpdatedAt = DateTime.UtcNow
-                };
-            }
-            catch(Exception)
+            return new CreateShortUrlResponse
             {
-                throw;
-            }
+                ExternalId = shortedUrlObj.UrlExternalId,
+                ShortUrl = shortedUrlObj.ShortUrl,
+                CreatedAt = DateTime.UtcNow,
+                UpdatedAt = DateTime.UtcNow
+            };
         }
     }
 }

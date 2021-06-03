@@ -22,7 +22,6 @@ namespace UrlShortner.Controllers
         [HttpPost]
         public IActionResult ShortShortenUrl(CreateShortUrlRequest request)
         {
-            request.UserId = Request.Headers["UserId"].ToString();
             var response = _urlService.GenerateShortUrl(request);
             return Ok(response);
         }
