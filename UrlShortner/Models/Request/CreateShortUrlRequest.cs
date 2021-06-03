@@ -7,8 +7,7 @@ namespace UrlShortner.Models.Request
     {
         public string UserId { get; set; }
         [Required]
-        [JsonProperty("url")]
-        [StringLength(12)]
-        public string Url { get; set; }
+        [JsonProperty("original_url")]
+        public string OriginalUrl { get; set; }
     }
 }

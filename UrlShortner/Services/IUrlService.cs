@@ -8,7 +8,6 @@ namespace UrlShortner.Services
 {
     public interface IUrlService
     {
-        public string GenerateHash();
         public ICreateShortUrlResponse GenerateShortUrl(ICreateShortUrlRequest request);
     }
 }

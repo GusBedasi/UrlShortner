@@ -1,12 +1,17 @@
 ﻿using Newtonsoft.Json;
+using System;
 
 namespace UrlShortner.Models
 {
     public class CreateShortUrlResponse : ICreateShortUrlResponse
     {
-        [JsonProperty("user_id")]
-        public string Id { get; set; }
         [JsonProperty("short_url")]
-        public int ShortUrl { get; set; }
+        public string ExternalId { get; set; }
+        [JsonProperty("short_url")]
+        public string ShortUrl { get; set; }
+        [JsonProperty("created_at")]
+        public DateTime CreatedAt { get; set; }
+        [JsonProperty("updated_at")]
+        public DateTime UpdatedAt { get; set; }
     }
 }

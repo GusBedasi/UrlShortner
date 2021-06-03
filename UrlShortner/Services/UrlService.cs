@@ -1,25 +1,54 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using MongoDB.Driver;
+using System;
+using System.Text;
+using UrlShortner.Database;
 using UrlShortner.Models;
+using UrlShortner.Models.Entities;
+using UrlShortner.Seedwork;
 
 namespace UrlShortner.Services
 {
     public class UrlService : IUrlService
     {
-        public string GenerateHash()
+        private readonly IMongoCollection<Url> _urls;
+        public UrlService(IDbClient dbClient)
         {
-            throw new NotImplementedException();
+            _urls = dbClient.GetUrlCollection();
         }
+
+        public IDbClient DbClient { get; }
 
         public ICreateShortUrlResponse GenerateShortUrl(ICreateShortUrlRequest request)
         {
-            return new CreateShortUrlResponse
+            var shortedUrlHash = Code.Create("", 7, true, false, false);
+
+            try
             {
-                Id = request.UserId,
-                ShortUrl = request.Url.GetHashCode()
-            };
+                var shortedUrlObj = new Url
+                {
+                    UrlExternalId = Code.Create("url_"),
+                    ShortUrl = $"www.shortenurl.com/{shortedUrlHash}",
+                    Hash = shortedUrlHash,
+                    OriginalUrl = request.OriginalUrl,
+                    CreatedAt = DateTime.UtcNow,
+                    UpdatedAt = DateTime.UtcNow
+                };
+
+            
+                _urls.InsertOne(shortedUrlObj);
+                
+                return new CreateShortUrlResponse
+                {
+                    ExternalId = shortedUrlObj.UrlExternalId,
+                    ShortUrl = shortedUrlObj.ShortUrl,
+                    CreatedAt = DateTime.UtcNow,
+                    UpdatedAt = DateTime.UtcNow
+                };
+            }
+            catch(Exception)
+            {
+                throw;
+            }
         }
     }
 }
